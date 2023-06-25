@@ -33,6 +33,21 @@ Run the program and enjoy!
 ```bash
   python3 TaskMan.py
 ```
+
+
+### Windows
+
+Install requirements from requirements.txt
+
+```bash
+  cd TaskMan
+  py -m pip install -r requirements.txt
+```
+Run the program and enjoy!
+
+```bash
+  py TaskMan.py
+```
     
 ## Feedback
 

@@ -56,6 +56,12 @@ Run the program and enjoy!
 ```bash
   py TaskMan.py
 ```
+
+#### Windows Stand-alone file
+
+If you have trouble installing the requirements on windows, you can download and use this stand-alone file
+
+https://github.com/Mega-Kranus/TaskMan/blob/main/Standalone/TaskMan.zip
     
 ## Feedback
 

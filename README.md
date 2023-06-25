@@ -38,6 +38,8 @@ Run the program and enjoy!
 
 ### Windows
 
+Make sure you have C++ v14.0 or greater installed
+
 Install requirements from requirements.txt
 
 ```bash

@@ -1,2 +1,3 @@
-PySide6
-SimpleAudio
+typing-extensions
+pyside6
+simpleaudio

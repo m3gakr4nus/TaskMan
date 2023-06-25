@@ -15,7 +15,7 @@ Task Man is a simple task management application developed in Python. This progr
 
 ## Demo
 
-https://github.com/Mega-Kranus/TaskMan/assets/137708778/ddab5437-79b5-4394-ad1c-88d6c0b74ed6
+https://github.com/Mega-Kranus/TaskMan/assets/137708778/1c781b45-85da-465c-b49a-f8aa577ad74a
 
 
 ## Installation

@@ -25,12 +25,12 @@ https://github.com/Mega-Kranus/TaskMan/assets/137708778/1c781b45-85da-465c-b49a-
 Install dependencies
 
 ```bash
-  cd TaskMan
   sudo apt-get install -y python3-dev libasound2-dev
 ```
 Install requirements from requirements.txt
 
 ```bash
+  cd TaskMan
   pip install -r requirements.txt
 ```
 

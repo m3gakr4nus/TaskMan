@@ -25,29 +25,29 @@ https://github.com/Mega-Kranus/TaskMan/assets/137708778/1c781b45-85da-465c-b49a-
 Install dependencies
 
 ```bash
-  sudo apt-get install -y build-essential libgl1-mesa-dev
-  sudo apt-get install -y python3-dev libasound2-dev
-```
-If you run into an error while running the program try running this command:
-
-```bash
-  sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+sudo apt-get install -y build-essential libgl1-mesa-dev
+sudo apt-get install -y python3-dev libasound2-dev
 ```
 
 Install requirements from requirements.txt
 
 ```bash
-  git clone https://github.com/Mega-Kranus/TaskMan.git
-  cd TaskMan
-  pip install -r requirements.txt
+git clone https://github.com/Mega-Kranus/TaskMan.git
+cd TaskMan
+pip install -r requirements.txt
 ```
 
 Run the program and enjoy!
 
 ```bash
-  python3 TaskMan.py
+python3 TaskMan.py
 ```
 
+If you run into an error while running the program try running this command:
+
+```bash
+sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+```
 
 ### Windows
 
@@ -59,13 +59,13 @@ Either clone or download the project as ZIP
 Install requirements from requirements.txt
 
 ```bash
-  cd TaskMan
-  py -m pip install -r requirements.txt
+cd TaskMan
+py -m pip install -r requirements.txt
 ```
 Run the program and enjoy!
 
 ```bash
-  py TaskMan.py
+py TaskMan.py
 ```
 
 #### Windows Stand-alone file

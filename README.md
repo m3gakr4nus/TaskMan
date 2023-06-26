@@ -25,11 +25,13 @@ https://github.com/Mega-Kranus/TaskMan/assets/137708778/1c781b45-85da-465c-b49a-
 Install dependencies
 
 ```bash
+  sudo apt-get install -y build-essential libgl1-mesa-dev
   sudo apt-get install -y python3-dev libasound2-dev
 ```
 Install requirements from requirements.txt
 
 ```bash
+  git clone https://github.com/Mega-Kranus/TaskMan.git
   cd TaskMan
   pip install -r requirements.txt
 ```
@@ -44,6 +46,9 @@ Run the program and enjoy!
 ### Windows
 
 Make sure you have C++ v14.0 or greater installed
+Download C++ Build Tools offline installer: https://aka.ms/vs/16/release/vs_buildtools.exe
+
+Either clone or download the project as ZIP
 
 Install requirements from requirements.txt
 

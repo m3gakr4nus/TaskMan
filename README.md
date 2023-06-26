@@ -52,6 +52,7 @@ sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-
 ### Windows
 
 Make sure you have C++ v14.0 or greater installed
+
 Download C++ Build Tools offline installer: https://aka.ms/vs/16/release/vs_buildtools.exe
 
 Either clone or download the project as ZIP

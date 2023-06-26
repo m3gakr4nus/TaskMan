@@ -40,7 +40,7 @@ pip install -r requirements.txt
 Run the program and enjoy!
 
 ```bash
-python3 TaskMan.py
+python3 taskman.py
 ```
 
 If you run into an error while running the program try running this command:
@@ -65,7 +65,7 @@ py -m pip install -r requirements.txt
 Run the program and enjoy!
 
 ```bash
-py TaskMan.py
+py taskman.py
 ```
 
 #### Windows Stand-alone file

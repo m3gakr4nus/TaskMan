@@ -28,6 +28,12 @@ Install dependencies
   sudo apt-get install -y build-essential libgl1-mesa-dev
   sudo apt-get install -y python3-dev libasound2-dev
 ```
+If you run into an error while running the program try running this command:
+
+```bash
+  sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+```
+
 Install requirements from requirements.txt
 
 ```bash

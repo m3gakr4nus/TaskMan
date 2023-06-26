@@ -1,4 +1,3 @@
 typing-extensions
-opencv-python-headless
 pyside6
-simpleaudio
+playsound

@@ -11,7 +11,8 @@ from PySide6.QtWidgets import (
     QScrollArea,
 )
 from PySide6.QtCore import Qt, QDate
-from simpleaudio import WaveObject
+from os.path import dirname, join
+from playsound import playsound
 
 from populate_scroll_area import PopulateScrollArea
 
@@ -178,10 +179,14 @@ class TaskInputSection(QWidget):
             self.load_from_DB()
 
             # Play a completion notification sound
-            notification_sound = WaveObject.from_wave_file(
-                "./Resources/Sounds/taskAddedNotificationSound_V0.2.wav"
+            current_path = dirname(__file__)
+            playsound(
+                join(
+                    current_path,
+                    "../Resources/Sounds/taskAddedNotificationSound_V0.2.wav",
+                ),
+                block=False,
             )
-            notification_sound.play()
 
     def load_from_DB(self) -> None:
         """This function will completely destroy the tasks list widgets if they

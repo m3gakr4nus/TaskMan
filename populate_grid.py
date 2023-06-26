@@ -1,7 +1,9 @@
 import sqlite3
 from PySide6.QtWidgets import QLabel, QCheckBox, QHBoxLayout, QGridLayout
 from PySide6.QtCore import Qt
-from simpleaudio import WaveObject
+from os.path import dirname, join
+
+from playsound import playsound
 
 """This file contains 2 classes.
 One is for populating tasks and the other for weights.
@@ -114,6 +116,9 @@ class PopulateTasks(QGridLayout):
             so it will be removed from the Database.
             """
 
+            # Set state to false so the user can not make any changes
+            self.task_checkbox.setEnabled(False)
+
             # Open database connection
             DB_CONNECTION = sqlite3.connect("TaskMan.db")
             DB_CURSOR = DB_CONNECTION.cursor()
@@ -135,10 +140,14 @@ class PopulateTasks(QGridLayout):
             self.deleteLater()
 
             # Play a sound after completion
-            notification_sound = WaveObject.from_wave_file(
-                "./Resources/Sounds/taskCompletedNotificationSound_V0.07.wav"
+            current_path = dirname(__file__)
+            playsound(
+                join(
+                    current_path,
+                    "Resources/Sounds/taskCompletedNotificationSound_V0.07.wav",
+                ),
+                block=False,
             )
-            notification_sound.play()
 
 
 class PopulateWeight(QGridLayout):

@@ -26,7 +26,6 @@ Install dependencies
 
 ```bash
 sudo apt-get install -y build-essential libgl1-mesa-dev
-sudo apt-get install -y python3-dev libasound2-dev
 ```
 
 Install requirements from requirements.txt
@@ -51,10 +50,6 @@ sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-
 
 ### Windows
 
-Make sure you have C++ v14.0 or greater installed
-
-Download C++ Build Tools offline installer: https://aka.ms/vs/16/release/vs_buildtools.exe
-
 Either clone or download the project as ZIP
 
 Install requirements from requirements.txt
@@ -63,19 +58,14 @@ Install requirements from requirements.txt
 cd TaskMan
 py -m pip install -r requirements.txt
 ```
+
 Run the program and enjoy!
 
 ```bash
 py taskman.py
 ```
 
-#### Windows Stand-alone file
-
-If you have trouble installing the requirements on windows, you can download and use this stand-alone file
-
-https://github.com/Mega-Kranus/TaskMan/blob/main/Standalone/TaskMan.zip
-    
 ## Feedback
 
-If you have any feedback, please reach out to us at taskmanproject@protonmail.com
+If you have any feedback, please reach out to me at taskmanproject@protonmail.com
 

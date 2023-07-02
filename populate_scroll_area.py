@@ -21,7 +21,7 @@ class PopulateScrollArea(QWidget):
     def get_weight_widget(self, unit_choice: str, weight_changes_label: QLabel) -> None:
         """This function will use my custom class to retrive a
         horizontal layout which contains 2 QLabels.
-        One the weight value and the other is the saved date of the value.
+        One is the weight value and the other is the saved date of the value.
 
         The layout will then be set as the QWidget's layout of this class.
         """

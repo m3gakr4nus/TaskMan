@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, QDate
 from os.path import dirname, join
-from playsound import playsound
+from pygame import mixer
 
 from populate_scroll_area import PopulateScrollArea
 
@@ -26,6 +26,15 @@ class WeightInputSection(QWidget):
 
         super().__init__()
 
+        # Initializing PyGame music variable
+        mixer.init()
+        self.weight_added_notification = mixer.Sound(
+            join(
+                dirname(__file__),
+                "../Resources/Sounds/taskAddedNotificationSound_V0.2.wav",
+            )
+        )
+
         # This is the main vertical layout for the input section.
         self.main_v_layout = QVBoxLayout()
         self.main_v_layout.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
@@ -34,11 +43,11 @@ class WeightInputSection(QWidget):
         self.tab_title = QLabel("Current Weight")
         self.tab_title.setAlignment(Qt.AlignHCenter)
 
-        # This is where user can either type or scroll through weight values.
+        # This is where the user can either type or scroll through weight values.
         # I chose to use a QDoubleSpinBox because of more control rather than a QLineEdit
         # User input validation -> Minimum 5.0 KG/lbs | Maximum 999.999 KG/lbs
         # User can scroll through values with +5 or -5 steps.
-        # Default value starts a 60 (Average world weight in KG for faster value selection)
+        # Default value starts at 60 (Average world weight in KG for faster value selection)
         # TO-DO: Set default value to last DB input if available
         self.new_weight_input = QDoubleSpinBox()
         self.new_weight_input.setMinimum(5.0)
@@ -71,7 +80,7 @@ class WeightInputSection(QWidget):
         self.new_weight_date.setDisplayFormat("dd.MM.yyyy")
         self.new_weight_date.setCalendarPopup(True)
 
-        # Pressing this butto will save the weight into DB and refresh the UI.
+        # Pressing this button will save the weight into the DB and refresh the UI.
         self.new_weight_add_button = QPushButton("Add")
         self.new_weight_add_button.clicked.connect(self.save_to_DB)
 
@@ -84,7 +93,7 @@ class WeightInputSection(QWidget):
         self.input_section_h_layout.addWidget(self.new_weight_date)
         self.input_section_h_layout.addWidget(self.new_weight_add_button)
 
-        # This section shows how much progress the user has had since the last
+        # This section shows how much progress the user has had since the last-
         # entry. (Not from the first entry but rather from the previous one)
         # TO-DO: Let this show overall progress since the first entry ever
         self.weight_changes_label = QLabel("Weight Changes: No progress")
@@ -108,12 +117,12 @@ class WeightInputSection(QWidget):
         self.load_from_DB()
 
     def update_weight_input_suffix(self, currentUnit: str) -> None:
-        """This function will run when user changes the weight unit.
+        """This function will run when the user changes the weight unit.
         It will destroy the UI first and re-generate it with converted values.
 
         By default, this app stores weight values in KG.
         This means if the user saves a new entry as lbs, it will first be -
-        converted to KG then stored in the DB. This make the convertion -
+        converted to KG then stored in the DB. This makes the convertion -
         process easier and faster.
         """
 
@@ -124,66 +133,58 @@ class WeightInputSection(QWidget):
         self.generate_weights_list_UI(already_exists=True)
 
     def save_to_DB(self) -> None:
-        """This function will convert any values that was entered as lb to KG.
+        """This function will convert any values that were entered as lb to KG.
         Then it will open a connection to the DB and save it there.
         Finally, it will play a short sound after completion.
         """
 
-        if self.new_weight_input.text():
-            weight_value = self.new_weight_input.value()
-            weight_unit = self.weight_unit_combobox.currentText()
-            weight_date = self.new_weight_date.date().toString(Qt.RFC2822Date)
-            weight_ID = 1
+        weight_value = self.new_weight_input.value()
+        weight_unit = self.weight_unit_combobox.currentText()
+        weight_date = self.new_weight_date.date().toString(Qt.RFC2822Date)
+        weight_ID = 1
 
-            # Only save Kilogram values in the Database.
-            # If the user chooses "lb", the program will convert the values.
-            # If not, the values will simply be shown straight from the DB.
-            if weight_unit == "lb":
-                weight_value = round(weight_value * 0.45359237, 2)
-                weight_unit = "KG"
+        # Only save Kilogram values in the Database.
+        # If the user chooses "lb", the program will convert the values.
+        # If not, the values will simply be shown straight from the DB.
+        if weight_unit == "lb":
+            weight_value = round(weight_value * 0.45359237, 2)
+            weight_unit = "KG"
 
-            # Opening the database connection.
-            DB_CONNECTION = sqlite3.connect("TaskMan.db")
-            DB_CURSOR = DB_CONNECTION.cursor()
+        # Opening the database connection.
+        DB_CONNECTION = sqlite3.connect("TaskMan.db")
+        DB_CURSOR = DB_CONNECTION.cursor()
 
-            # Checking for the last task ID saved in the DB.
-            # TO-DO: Only select weight_id from DB (no need to get everything)
-            DB_CURSOR.execute("SELECT * FROM Weights")
-            weights = DB_CURSOR.fetchall()
+        # Checking for the last task ID saved in the DB.
+        # TO-DO: Only select weight_id from DB (no need to get everything)
+        DB_CURSOR.execute("SELECT * FROM Weights")
+        weights = DB_CURSOR.fetchall()
 
-            # Simply trying to find the last ID saved in the DB
-            # TO-DO: can be easily done with something like:
-            # if empty -> ID = 1 | if not empty -> ID = weights[-1][0] + 1
-            for weight in weights:
-                if weight[0] > weight_ID:
-                    weight_ID = weight[0]
-                if weight[0] == weight_ID:
-                    weight_ID += 1
+        # Simply trying to find the last ID saved in the DB
+        # TO-DO: can be easily done with something like:
+        # if empty -> ID = 1 | if not empty -> ID = weights[-1][0] + 1
+        for weight in weights:
+            if weight[0] > weight_ID:
+                weight_ID = weight[0]
+            if weight[0] == weight_ID:
+                weight_ID += 1
 
-            # Finally saving the new weight in the DB.
-            DB_CURSOR.execute(
-                f"INSERT INTO Weights VALUES('{weight_ID}', '{weight_value}', '{weight_unit}', '{weight_date}')"
-            )
+        # Finally saving the new weight in the DB.
+        DB_CURSOR.execute(
+            f"INSERT INTO Weights VALUES('{weight_ID}', '{weight_value}', '{weight_unit}', '{weight_date}')"
+        )
 
-            # This will commit the changes before closing the connection.
-            DB_CONNECTION.commit()
+        # This will commit the changes before closing the connection.
+        DB_CONNECTION.commit()
 
-            # Close the DB connection.
-            DB_CURSOR.close()
-            DB_CONNECTION.close()
+        # Close the DB connection.
+        DB_CURSOR.close()
+        DB_CONNECTION.close()
 
-            # Refreshing the UI so the newly added weight shows up.
-            self.load_from_DB()
+        # Refreshing the UI so the newly added weight shows up.
+        self.load_from_DB()
 
-            # Play a completion notification sound
-            current_path = dirname(__file__)
-            playsound(
-                join(
-                    current_path,
-                    "../Resources/Sounds/taskAddedNotificationSound_V0.2.wav",
-                ),
-                block=False,
-            )
+        # Play a completion notification sound
+        self.weight_added_notification.play()
 
     def load_from_DB(self) -> None:
         """This function will completely destroy the weights list widgets if they

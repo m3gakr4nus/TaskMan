@@ -12,7 +12,12 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, QDate
 from os.path import dirname, join
-from playsound import playsound
+from os import environ
+
+# Disable the corny pointless idiotic PyGame Welcome message in the console...
+environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "0"
+
+from pygame import mixer
 
 from populate_scroll_area import PopulateScrollArea
 
@@ -23,6 +28,15 @@ class TaskInputSection(QWidget):
         for the task input section of the app.
         """
         super().__init__()
+
+        # Initializing PyGame music variable
+        mixer.init()
+        self.task_added_notification = mixer.Sound(
+            join(
+                dirname(__file__),
+                "../Resources/Sounds/taskAddedNotificationSound_V0.2.wav",
+            )
+        )
 
         # This is the main vertical layout for the input section.
         self.main_v_layout = QVBoxLayout()
@@ -40,7 +54,7 @@ class TaskInputSection(QWidget):
         self.new_task_input.setClearButtonEnabled(True)
         self.new_task_input.returnPressed.connect(self.save_to_DB)
 
-        # This is where user can choose the date for their new task.
+        # This is where the user can choose the date for their new task.
         # User input validation -> make sure no tasks can be added before today.
         # Let the user choose with a calandar rather than typing/spinning.
         # Change the active tasks date so the user see's the tasks for that day.
@@ -50,7 +64,7 @@ class TaskInputSection(QWidget):
         self.new_task_date.setCalendarPopup(True)
         self.new_task_date.dateChanged.connect(self.update_active_tasks_date)
 
-        # Pressing this butto will save the task into DB and refresh the UI.
+        # Pressing this button will save the task into the DB and refresh the UI.
         self.new_task_add_button = QPushButton("Add")
         self.new_task_add_button.clicked.connect(self.save_to_DB)
 
@@ -62,11 +76,11 @@ class TaskInputSection(QWidget):
         self.input_section_h_layout.addWidget(self.new_task_date)
         self.input_section_h_layout.addWidget(self.new_task_add_button)
 
-        # Simple a label for the active tasks section
+        # Simply a title for the active tasks section
         self.current_active_tasks_label = QLabel("Current Active Tasks")
         self.current_active_tasks_label.setAlignment(Qt.AlignHCenter)
 
-        # User can choose to see a certain date's active tasks.
+        # The user can choose to see a certain date's active tasks.
         # Every time the date is changed the tasks list is refreshed.
         self.active_tasks_date = QDateEdit(QDate.currentDate())
         self.active_tasks_date.setDisplayFormat("dd.MM.yyyy")
@@ -77,7 +91,7 @@ class TaskInputSection(QWidget):
         )
         self.active_tasks_date.dateChanged.connect(self.load_from_DB)
 
-        # These button will helps the user navigate faster.
+        # These buttons will helps the user navigate faster.
         # Increase or decrease 1 day from whatever the current date is.
         self.previous_day_button = QPushButton("<")
         self.previous_day_button.clicked.connect(
@@ -126,7 +140,7 @@ class TaskInputSection(QWidget):
 
     def save_to_DB(self) -> None:
         """This function will open a connection to the database and if the input
-        if valid, it will get saved. This will also play a short sound after
+        is valid, it will get saved. This will also play a short sound after
         completion.
         """
 
@@ -179,14 +193,7 @@ class TaskInputSection(QWidget):
             self.load_from_DB()
 
             # Play a completion notification sound
-            current_path = dirname(__file__)
-            playsound(
-                join(
-                    current_path,
-                    "../Resources/Sounds/taskAddedNotificationSound_V0.2.wav",
-                ),
-                block=False,
-            )
+            self.task_added_notification.play()
 
     def load_from_DB(self) -> None:
         """This function will completely destroy the tasks list widgets if they
@@ -200,20 +207,17 @@ class TaskInputSection(QWidget):
         try:
             if self.tasks_scroll_area_widget:
                 # If the widget already exists destroy first before re-generating.
-                self.generate_tasks_list_UI(already_exists=False)
+                self.generate_tasks_list_UI(date, already_exists=True)
 
         except AttributeError:
             # If it does not exist, simply generate it.
 
-            self.generate_tasks_list_UI()
+            self.generate_tasks_list_UI(date)
 
-    def generate_tasks_list_UI(self, already_exists: bool = False) -> None:
+    def generate_tasks_list_UI(self, date: str, already_exists: bool = False) -> None:
         """This function will create a new object of my custom class.
         The class will return a QWidget populated with items from the DB.
         """
-
-        # Load tasks from this date
-        date = self.active_tasks_date.date().toString(Qt.RFC2822Date)
 
         # If the widget already exists destroy first before re-generating.
         if already_exists:

@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QLabel, QCheckBox, QHBoxLayout, QGridLayout
 from PySide6.QtCore import Qt
 from os.path import dirname, join
 
-from playsound import playsound
+from pygame import mixer
 
 """This file contains 2 classes.
 One is for populating tasks and the other for weights.
@@ -17,11 +17,21 @@ Might change this in the future.
 
 
 class PopulateTasks(QGridLayout):
+    # Initializing PyGame music variable as a class variable
+    mixer.init()
+    task_completed_notification = mixer.Sound(
+        join(
+            dirname(__file__),
+            "Resources/Sounds/taskCompletedNotificationSound_V0.07.wav",
+        )
+    )
+
     def __init__(self, date: str) -> None:
-        """This initializer will createa a QGridLayout and populate it with
+        """This initializer will create a QGridLayout and populate it with
         layout objects which include records from the DB.
         These layouts are taken from the nested/child class.
         """
+
         # Create QGridLayout
         super().__init__()
 
@@ -62,7 +72,7 @@ class PopulateTasks(QGridLayout):
         """
 
         # Start removing from bottom up because the after removing -
-        # the count gets updated.
+        # widgets, the count gets updated.
         for _layout in reversed(range(self.count())):
             currentLayout = self.takeAt(_layout)
             # Destroy the widgets inside this layout.
@@ -92,7 +102,7 @@ class PopulateTasks(QGridLayout):
             # Create a QHBoxLayout
             super().__init__()
 
-            # Initialize class variables
+            # Initialize variables
             self.OUTER_CLASS_INSTANCE = outer_class_instance
             self.TASK_TITLE = task_title
             self.TASK_ID = task_ID
@@ -117,6 +127,8 @@ class PopulateTasks(QGridLayout):
             """
 
             # Set state to false so the user can not make any changes
+            # The removal process happens pretty quickly but I put this here-
+            # just in case.
             self.task_checkbox.setEnabled(False)
 
             # Open database connection
@@ -140,19 +152,12 @@ class PopulateTasks(QGridLayout):
             self.deleteLater()
 
             # Play a sound after completion
-            current_path = dirname(__file__)
-            playsound(
-                join(
-                    current_path,
-                    "Resources/Sounds/taskCompletedNotificationSound_V0.07.wav",
-                ),
-                block=False,
-            )
+            PopulateTasks.task_completed_notification.play()
 
 
 class PopulateWeight(QGridLayout):
     def __init__(self, unit_choice: str, weight_changes_label: QLabel):
-        """This initializer will createa a QGridLayout and populate it with
+        """This initializer will create a QGridLayout and populate it with
         layout objects which include records from the DB.
         These layouts are taken from the nested/child class.
         """

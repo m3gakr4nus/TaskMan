@@ -25,7 +25,7 @@ https://github.com/Mega-Kranus/TaskMan/assets/137708778/1c781b45-85da-465c-b49a-
 Install dependencies
 
 ```bash
-sudo apt-get install -y build-essential libgl1-mesa-dev
+sudo apt install -y build-essential libgl1-mesa-dev
 ```
 
 Install requirements from requirements.txt
@@ -45,7 +45,7 @@ python3 taskman.py
 If you run into an error while running the program try running this command:
 
 ```bash
-sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+sudo apt install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
 ```
 
 ### Windows

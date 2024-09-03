@@ -67,4 +67,4 @@ py taskman.py
 
 ## Feedback
 
-If you have any feedback, please reach out to me at Mega-Kranus@proton.me
+If you have any feedback, please reach out to me at m3gakr4nus@proton.me
